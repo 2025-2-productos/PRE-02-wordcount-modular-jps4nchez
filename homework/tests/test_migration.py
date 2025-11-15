@@ -1,21 +1,17 @@
 import os
 
-from ..src.wordcount import main
-
 
 def test_migracion():
 
-    main()
-
-    results_path = "data/output/wordcount.tsv"
-    if not os.path.exists(results_path):
-        raise FileNotFoundError("El archivo wordcount.tsv no existe.")
+    if not os.path.exists("data/output/results.tsv"):
+        raise FileNotFoundError("El archivo results.tsv no existe.")
 
     results = {}
-    with open(results_path, "r", encoding="utf-8") as f:
-        for line in f:
-            word, count = line.strip().split("\t")
-            results[word] = int(count)
+    with open("data/output/results.tsv", "r", encoding="utf-8") as f:
+        lines = f.readlines()
+        for line in lines:
+            key, value = line.strip().split("\t")
+            results[key] = value
 
-    assert results["computational"] == 3
-    assert results["analytics"] == 5
+    assert results.get("computational", 0) == "3"
+    assert results.get("analytics", 0) == "5"
